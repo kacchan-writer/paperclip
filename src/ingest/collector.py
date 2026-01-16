@@ -63,27 +63,42 @@ def normalize_text(text: str) -> str:
     return " ".join(text.lower().strip().split())
 
 
+def _create_fallback_key(item: PaperMetadata) -> str:
+    """Create a deduplication key from title, authors, and published date."""
+    return "|".join(
+        [
+            normalize_text(item.title),
+            normalize_text(" ".join(item.authors)),
+            item.published_date.isoformat(),
+        ]
+    )
+
+
+def _get_dedup_key(item: PaperMetadata) -> tuple[str, str]:
+    """
+    Get the deduplication key for a paper item.
+
+    Returns a tuple of (key_type, key_value) where:
+    - key_type is either "doi" or "fallback"
+    - key_value is the normalized key string
+    """
+    if item.doi:
+        return ("doi", item.doi.lower().strip())
+    return ("fallback", _create_fallback_key(item))
+
+
 def dedupe_metadata(items: Iterable[PaperMetadata]) -> list[PaperMetadata]:
-    seen_doi: set[str] = set()
-    seen_fallback: set[str] = set()
+    """Remove duplicate papers using DOI when available, falling back to title/authors/date."""
+    seen_keys: dict[str, set[str]] = {"doi": set(), "fallback": set()}
     deduped: list[PaperMetadata] = []
+
     for item in items:
-        if item.doi:
-            doi_key = item.doi.lower().strip()
-            if doi_key in seen_doi:
-                continue
-            seen_doi.add(doi_key)
-            deduped.append(item)
+        key_type, key_value = _get_dedup_key(item)
+
+        if key_value in seen_keys[key_type]:
             continue
-        fallback_key = "|".join(
-            [
-                normalize_text(item.title),
-                normalize_text(" ".join(item.authors)),
-                item.published_date.isoformat(),
-            ]
-        )
-        if fallback_key in seen_fallback:
-            continue
-        seen_fallback.add(fallback_key)
+
+        seen_keys[key_type].add(key_value)
         deduped.append(item)
+
     return deduped
