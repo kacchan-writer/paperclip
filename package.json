@@ -1,0 +1,10 @@
+{
+  "name": "paperclip",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Paper listing and PDF viewer",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  }
+}

@@ -1,0 +1,142 @@
+:root {
+  color-scheme: light;
+  font-family: "Noto Sans JP", "Segoe UI", sans-serif;
+  background: #f5f6fb;
+  color: #1d1f27;
+}
+
+body {
+  margin: 0;
+}
+
+.page-header {
+  background: linear-gradient(120deg, #4c6ef5, #15aabf);
+  color: #fff;
+  padding: 32px 48px;
+}
+
+.page-header h1 {
+  margin: 0 0 8px;
+  font-size: 28px;
+}
+
+.page-body {
+  padding: 24px 48px 48px;
+  display: grid;
+  gap: 24px;
+}
+
+.panel {
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 12px 24px rgba(20, 27, 52, 0.08);
+}
+
+.filters {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.filters label {
+  display: grid;
+  gap: 6px;
+  font-size: 14px;
+}
+
+.filters input {
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid #d8dbe6;
+  font-size: 14px;
+}
+
+.filters button {
+  align-self: end;
+  background: #4c6ef5;
+  border: none;
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  height: 42px;
+}
+
+.paper-list {
+  display: grid;
+  gap: 16px;
+}
+
+.paper-card {
+  border: 1px solid #e5e7f0;
+  border-radius: 14px;
+  padding: 16px;
+  display: grid;
+  gap: 8px;
+  cursor: pointer;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.paper-card:hover {
+  border-color: #4c6ef5;
+  box-shadow: 0 12px 20px rgba(76, 110, 245, 0.12);
+}
+
+.paper-card h3 {
+  margin: 0;
+}
+
+.detail-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.detail-meta {
+  color: #5f667a;
+  margin-top: 4px;
+}
+
+.secondary {
+  background: #edf1ff;
+  border: none;
+  color: #3b5bdb;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.pdf-viewer {
+  margin-top: 24px;
+}
+
+.pdf-container {
+  position: relative;
+  border: 1px solid #dfe3f0;
+  border-radius: 12px;
+  padding: 16px;
+  background: #f8f9fe;
+  min-height: 320px;
+}
+
+#pdf-canvas {
+  width: 100%;
+}
+
+.pdf-placeholder {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: #8791a6;
+  font-size: 14px;
+}
+
+.hint {
+  color: #6a7288;
+  margin-top: 0;
+}
