@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Paperclip</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"
+      defer
+    ></script>
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <header class="page-header">
+      <div>
+        <h1>Paperclip</h1>
+        <p>論文一覧・詳細・PDF 表示</p>
+      </div>
+    </header>
+
+    <main class="page-body">
+      <section class="panel">
+        <h2>検索フィルタ</h2>
+        <form id="search-form" class="filters">
+          <label>
+            キーワード
+            <input type="text" name="keyword" placeholder="タイトル・概要" />
+          </label>
+          <label>
+            カテゴリ
+            <input type="text" name="category" placeholder="Machine Learning など" />
+          </label>
+          <label>
+            著者
+            <input type="text" name="author" placeholder="著者名" />
+          </label>
+          <label>
+            公開日 (開始)
+            <input type="date" name="published_from" />
+          </label>
+          <label>
+            公開日 (終了)
+            <input type="date" name="published_to" />
+          </label>
+          <button type="submit">検索</button>
+        </form>
+      </section>
+
+      <section class="panel" id="list-panel">
+        <h2>論文一覧</h2>
+        <p class="hint">対象の論文をクリックすると詳細が表示されます。</p>
+        <div id="paper-list" class="paper-list"></div>
+      </section>
+
+      <section class="panel" id="detail-panel" hidden>
+        <div class="detail-header">
+          <div>
+            <h2 id="detail-title">論文詳細</h2>
+            <p id="detail-meta" class="detail-meta"></p>
+          </div>
+          <button id="back-to-list" type="button" class="secondary">一覧に戻る</button>
+        </div>
+        <p id="detail-abstract"></p>
+
+        <div class="pdf-viewer">
+          <h3>PDF プレビュー</h3>
+          <div class="pdf-container">
+            <canvas id="pdf-canvas"></canvas>
+            <div id="pdf-placeholder" class="pdf-placeholder">
+              PDF を読み込み中...
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
