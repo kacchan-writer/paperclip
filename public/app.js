@@ -6,8 +6,11 @@ const backButton = document.getElementById("back-to-list");
 const detailTitle = document.getElementById("detail-title");
 const detailMeta = document.getElementById("detail-meta");
 const detailAbstract = document.getElementById("detail-abstract");
+const detailSummary = document.getElementById("detail-summary");
+const detailSummaryJa = document.getElementById("detail-summary-ja");
 const pdfCanvas = document.getElementById("pdf-canvas");
 const pdfPlaceholder = document.getElementById("pdf-placeholder");
+const lastUpdated = document.getElementById("last-updated");
 
 const pdfjsLib = window["pdfjs-dist/build/pdf"] || window.pdfjsLib;
 
@@ -21,8 +24,11 @@ const fetchPapers = async (query = "") => {
   return response.json();
 };
 
-const renderList = (papers) => {
+const renderList = (papers, updatedAt) => {
   paperList.innerHTML = "";
+  if (updatedAt && lastUpdated) {
+    lastUpdated.textContent = `（最終更新: ${new Date(updatedAt).toLocaleString()}）`;
+  }
 
   if (!papers.length) {
     paperList.innerHTML = "<p>該当する論文がありません。</p>";
@@ -34,7 +40,7 @@ const renderList = (papers) => {
     card.className = "paper-card";
     card.innerHTML = `
       <h3>${paper.title}</h3>
-      <p>${paper.abstract}</p>
+      <p>${paper.summary || paper.abstract}</p>
       <small>${paper.authors.join(", ")} · ${paper.category}</small>
       <small>公開日: ${paper.publishedAt}</small>
     `;
@@ -50,6 +56,9 @@ const showDetail = async (paperId) => {
   detailTitle.textContent = paper.title;
   detailMeta.textContent = `${paper.authors.join(", ")} · ${paper.category} · ${paper.publishedAt}`;
   detailAbstract.textContent = paper.abstract;
+  detailSummary.textContent = paper.summary || "要点がまだありません。";
+  detailSummaryJa.textContent =
+    paper.summaryJa || "日本語要約は未取得です（翻訳 API を設定してください）。";
 
   listPanel.hidden = true;
   detailPanel.hidden = false;
@@ -77,7 +86,7 @@ searchForm.addEventListener("submit", async (event) => {
   const formData = new FormData(searchForm);
   const query = new URLSearchParams(formData).toString();
   const result = await fetchPapers(`?${query}`);
-  renderList(result.items);
+  renderList(result.items, result.lastUpdated);
 });
 
 backButton.addEventListener("click", () => {
@@ -87,5 +96,5 @@ backButton.addEventListener("click", () => {
 
 (async () => {
   const result = await fetchPapers();
-  renderList(result.items);
+  renderList(result.items, result.lastUpdated);
 })();
